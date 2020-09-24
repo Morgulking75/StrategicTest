@@ -19,7 +19,13 @@ export class AppComponent {
 		const data = await fetch('https://raw.githubusercontent.com/StrategicFS/Recruitment/master/data.json');
 		const jsonData = await data.json();
 
-		this.data = (jsonData as IStrategicData[]);
+		this.data = (jsonData as IStrategicData[])
+			.map(d => {
+				d.minPaymentPercentage = d.minPaymentPercentage / 100;
+
+				return d;
+			});
+
 		this.updateCheckCount();
 		this.updateTotalRowCount();
 		this.updateTotalBalance();
