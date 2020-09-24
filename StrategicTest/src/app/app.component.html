@@ -29,24 +29,24 @@
 						name="{{item.id}}-checkbox">
 				</td>
 				<td>
-					<div>{{item.creditorName}}</div>
+					<input type="text" [(ngModel)]="item.creditorName">
 				</td>
 				<td>
-					<div>{{item.firstName}}</div>
+					<input type="text" [(ngModel)]="item.firstName">
 				</td>
 				<td>
-					<div>{{item.lastName}}</div>
+					<input type="text" [(ngModel)]="item.lastName">
 				</td>
 				<td>
-					<div>{{item.minPaymentPercentage}}</div>
+					<input type="text" [(ngModel)]="item.minPaymentPercentage">
 				</td>
 				<td>
-					<div>{{ item.balance }}</div>
+					<input type="text" [(ngModel)]="item.balance">
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-					<button>Add Debt</button>
+					<button (click)="addDebt()" class="btn btn-primary">Add Debt</button>
 					<button (click)="removeRows()">Remove Debt</button>
 				</td>
 			</tr>

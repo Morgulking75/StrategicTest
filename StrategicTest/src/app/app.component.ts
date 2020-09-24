@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IStrategicData } from './StrategicData';
 import { StrategicData } from './StrategicData';
 
 @Component({
@@ -8,17 +9,17 @@ import { StrategicData } from './StrategicData';
 })
 export class AppComponent {
 	title = 'StrategicTest';
-	data: StrategicData[];
+	data: IStrategicData[];
 	total: number;
 	totalRowCount: number;
 	totalCheckRowCount: number;
 	toggleChecked: boolean;
 
-	async getStrategicData(): Promise<StrategicData[]> {
+	async getStrategicData(): Promise<IStrategicData[]> {
 		const data = await fetch('https://raw.githubusercontent.com/StrategicFS/Recruitment/master/data.json');
 		const jsonData = await data.json();
 
-		this.data = (jsonData as StrategicData[]);
+		this.data = (jsonData as IStrategicData[]);
 		this.updateCheckCount();
 		this.updateTotalRowCount();
 		this.updateTotalBalance();
@@ -34,6 +35,8 @@ export class AppComponent {
 		this.totalCheckRowCount = this.data.map(d => d.isChecked).reduce((a, b) => a + (b ? 1 : 0), 0);
 
 		this.toggleChecked = this.totalCheckRowCount === this.totalRowCount;
+
+		this.updateTotalBalance();
 	}
 
 	updateTotalRowCount() {
@@ -41,7 +44,7 @@ export class AppComponent {
 	}
 
 	updateTotalBalance() {
-		this.total = this.data.map(d => d.balance).reduce((a, b) => a + b, 0);
+		this.total = this.data.filter(d => d.isChecked).map(d => d.balance).reduce((a, b) => a + b, 0);
 	}
 
 	removeRows() {
@@ -56,5 +59,14 @@ export class AppComponent {
 		this.data.forEach(d => d.isChecked = this.toggleChecked);
 
 		this.updateCheckCount();
+	}
+
+	addDebt() {
+		const newRow = new StrategicData();
+
+		newRow.balance = 0;
+		newRow.minPaymentPercentage = 0;
+
+		this.data.push(newRow);
 	}
 }
